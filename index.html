@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Urgent! Top Secret Invitation</title>
+    <title>Chandrapal birthday Invitation</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Jost:wght@400;700&display=swap');
 
@@ -78,8 +78,17 @@
             color: white; 
             box-shadow: 0 5px #c0392b;
             position: relative; /* Crucial for moving it */
+            
         }
-        .decline-btn:hover { background-color: #c0392b; }
+        /* ADD THIS CSS TO FIX THE BUTTON POSITIONING CONFLICT */
+        .decline-btn.runaway-effect {
+            position: relative; /* REQUIRED for movement */
+            left: 0;
+            top: 0;
+            z-index: 100;
+            margin: 10px auto; /* Centered initial position */
+        }
+                .decline-btn:hover { background-color: #c0392b; }
 
         button:active { transform: translateY(3px); box-shadow: 0 2px #27ae60; }
 
@@ -92,23 +101,37 @@
 </head>
 <body>
 
-    <div class="card">
-        <h1>Habibi !</h1>
-        <p class="quote">"ajaa tujhe fanta pilata hun" </p>
-        <hr style="border-color: #ddd;">
-        <p class="invite-text">"tujhe meri birthday ki yaad nahi aayi jassi".</p>
-        
-        <div class="details">
-            📍 LOCATION: <span class="venue-name">Near avesto</span><br>
-            ⏰ TIME: <span class="venue-name">4 PM</span><br>
-            📅 DATE: <span class="venue-name">24 April !</span>
-        </div>
+            <div class="card">
+            <div class="header-section">
+                <h1>Radhe Radhe !</h1>
+                <p class="italic-quote">"tujhe meri birthday ki yaad nahi aayi jassi "</p>
+            </div>
 
-        <p class="quote">Decision time. Don't be "that guy."</p><br>
+            <hr class="divider">
 
-        <div class="btn-group">
-            <button class="accept-btn" onclick="response('YES')">100% Coming! 🥳</button>
-            <button class="decline-btn" id="runawayBtn" onmouseover="tryRun()">Can't make it... 😢</button>
+            <div class="content-section">
+                <h2>"Link click krke aya matlb tujhe party me ana hai".</h2>
+            </div>
+
+            <div class="info-box-wrapper">
+                <div class="info-box">
+                    <p class="location-item">📍 LOCATION: <span class="highlight">Near avesto</span></p>
+                    <p class="time-item">⏰ TIME: <span class="highlight">4 PM</span></p>
+                    <p class="date-item">📅 DATE: <span class="highlight">24 April !</span></p>
+                </div>
+            </div>
+
+            <div class="final-action-section">
+                <p class="quote blink-text">"Invitation Accept karne ke liye click kro."</p>
+                <div class="action-buttons-wrapper">
+                    <button class="accept-btn" onclick="response('YES')">I AM COMMING! 🥳</button>
+                    
+                    <button class="decline-btn" id="runawayBtn" 
+                        onmouseover="tryRun()"onclick="tryRun()">
+                        NAHI AA PAUNGA BHAI... 😢
+                    </button>
+                 </div>
+            </div>
         </div>
         
         <p id="final-msg"></p>
@@ -147,35 +170,55 @@
                         font-size: 2rem;
                         -webkit-text-stroke: 1px #ff4500;
                     }
+                    /* The Blinking Animation */
+                    @keyframes blinker {
+                        50% { opacity: 0.2; transform: scale(1.05); }
+                    }
+
+                    .blink-text {
+                        color: #ff4500; /* A bright orange/red for attention */
+                        font-weight: bold;
+                        animation: blinker 1s linear infinite; /* Blinks every 1 second */
+                        display: inline-block; /* Required for the scale effect to work */
+                        cursor: pointer;
+                    }
         </style>
 
     <script>
-        const btn = document.getElementById("runawayBtn");
-        const status = document.getElementById('final-msg');
-
+        
         // Function for the Running Button Prank
-        let attempts = 0;
+        let declineAttempts = 0;
 
             function tryRun() {
                 const btn = document.getElementById("runawayBtn");
-                const status = document.getElementById('final-msg');
+                const popup = document.getElementById('popup-overlay');
+                const popupImg = document.getElementById('popup-img');
+                const popupText = document.getElementById('popup-text');
                 
-                attempts++;
+                declineAttempts++;
 
-                if (attempts > 5) {
-                    // After 5 tries, let them click it but show a sad message
-                    status.style.color = "#e74c3c";
-                    status.innerText = "Bhai, itna gussa? Maan jaa na! 🙏";
+                // 1st and 2nd attempt: The button jumps away
+            if (declineAttempts <= 2) {
+                    // Generates a random jump between -100px and 100px
+                    const x = Math.random() * 200 - 100; 
+                    const y = Math.random() * 200 - 100; 
+                    
+                    btn.style.transform = `translate(${x}px, ${y}px)`;
+                } 
+                // 3rd attempt: Trigger the "Gussa" popup
+             else {
                     btn.style.transform = "translate(0, 0)";
-                    return;
-                }
+                    // Make sure 'gussa.jpg' is in your folder!
+                    popupImg.src = './531suo.jpg'; 
+                    popupText.innerText = "KYU BHAI ITNA GUSSA, AJA PARTY ME! ❤️";
+                    popup.style.display = 'flex';
 
-                // This calculates a random jump within a 200px range
-                const x = Math.random() * 200 - 100; 
-                const y = Math.random() * 200 - 100; 
-
-                btn.style.transform = `translate(${x}px, ${y}px)`;
+                     setTimeout(() => {
+                    const gussaMsg = encodeURIComponent("Bhai, itna gussa kyun?, main aa raha hoon! Thanks for Inviting 😂🙌,Happy Bday");
+                    window.location.href = `https://wa.me/917870961288?text=${gussaMsg}`;
+                }, 3000);
             }
+         }
         
             function response(answer) {
                 if(answer === 'YES') {
@@ -193,10 +236,10 @@
 
                     // 2. Optional: Change the text based on the image too!
                     const memeTexts = [
-                        'ABHI MAZAA AAYEGA NA BHIDU!',
-                        'WAH BETA MAUJ KARDI!',
-                        'Love u darling',
-                        'Aao Haveli pe'
+                        'Bhai Party attend krne ke liye Uzbekistan ana padega!',
+                        'WAH BETA MAUJ, INDIA SE HI PARTY LENA HAI UZBEKISTAN AAO!',
+                        'Love u darling COME TO UZBEKISTAN ',
+                        'Aao UZBEKISATA pe'
                     ];
 
                     // 3. Pick a random index (0 or 1)
@@ -211,14 +254,11 @@
 
                 // 6. Play a sound (Optional: you can add a meme sound here)
                 
-                // 7. Redirect after 3 seconds so they can see the image
-                const yourNumber = "998946732561"; // Your WhatsApp
-                const venue = "Pappu's Party Hub"; 
                 
                 setTimeout(() => {
-                    const message = encodeURIComponent(`"Sahi pakde hain!" I am 100% coming! See you tomorrow! 🥳`);
-                    window.location.href = "https://wa.me/+998946732561?text=I'm%20coming%20to%20the%20birthday%20party!%20🥳";
-                }, 1500);
+                const ticketMsg = encodeURIComponent("Bhai ticket bhejde tab na aunga! Thanks for Inviting 🥳 Happy Bday");
+                window.location.href = `https://wa.me/917870961288?text=${ticketMsg}`;
+            },  2500); // 2.5 seconds delay to read the meme
             }
         }
     </script>
